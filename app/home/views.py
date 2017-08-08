@@ -30,16 +30,16 @@ def register():
     return render_template("home/register.html")
 
 
-# 用户
-@home.route("/user/")
-def user():
-    return render_template("home/user.html")
+# # 首页
+# @home.route("/index/")
+# def index():
+#     return render_template("home/index.html")
 
 
-# 修改密码
-@home.route("/pwd/")
-def pwd():
-    return render_template("home/pwd.html")
+# 动画
+@home.route("/animation/")
+def animation():
+    return render_template("home/animation.html")
 
 
 # 评论纪录
@@ -59,4 +59,19 @@ def enshrine():
 @home.route("/loginlog/")
 def loginlog():
     return render_template("home/loginlog.html")
+
+# # 登录日志
+# @home.route("/loginlog/")
+# def loginlog():
+#     return render_template("home/loginlog.html")
+
+
+
+# # 动画
+# @home.route("/animation/")
+# def animation():
+#     return render_template("home/animation.html")
+
+
+
 
