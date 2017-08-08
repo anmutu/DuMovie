@@ -173,7 +173,7 @@ class AdminLog(db.Model):
 class OperLog(db.Model):
     __tablename__ = "OperLog"
     id = db.Column(db.Integer, primary_key=True)  # 编号
-    admin_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属管理员
+   # admin_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属管理员
     ip = db.Column(db.String(100))  # IP
     reason = db.Column(db.String(600))  # 原因
     addtime = db.Column(db.DateTime, index=True, default=datetime.utcnow)  # 增加时间
