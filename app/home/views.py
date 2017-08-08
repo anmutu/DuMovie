@@ -60,17 +60,24 @@ def enshrine():
 def loginlog():
     return render_template("home/loginlog.html")
 
-# # 登录日志
-# @home.route("/loginlog/")
-# def loginlog():
-#     return render_template("home/loginlog.html")
+
+
+# 搜索页面
+@home.route("/search/")
+def search():
+    return render_template("home/search.html")
+
+# 登录日志
+@home.route("/user/")
+def user():
+    return render_template("home/user.html")
 
 
 
-# # 动画
-# @home.route("/animation/")
-# def animation():
-#     return render_template("home/animation.html")
+# 修改密码
+@home.route("/pwd/")
+def pwd():
+    return render_template("home/pwd.html")
 
 
 
