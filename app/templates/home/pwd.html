@@ -6,24 +6,28 @@
 {% block content %}
 
 <div class="container" style="margin-top:76px">
-    <div class="col-md-3">
-        <div class="list-group">
-            <a href="user.html" class="list-group-item">
-                <span class="glyphicon glyphicon-user"></span>&nbsp;会员中心
-            </a>
-             <a href="pwd.html" class="list-group-item active">
-                <span class="glyphicon glyphicon-lock"></span>&nbsp;修改密码
-            </a>
-            <a href="comments.html" class="list-group-item">
-                <span class="glyphicon glyphicon-comment"></span>&nbsp;评论记录
-            </a>
-            <a href="loginlog.html" class="list-group-item">
-                <span class="glyphicon glyphicon-calendar"></span>&nbsp;登录日志
-            </a>
-            <a href="moviecol.html" class="list-group-item">
-                <span class="glyphicon glyphicon-heart"></span>&nbsp;收藏电影
-            </a>
-        </div>
+    <!--<div class="col-md-3">-->
+        <!--<div class="list-group">-->
+            <!--<a href="user.html" class="list-group-item">-->
+                <!--<span class="glyphicon glyphicon-user"></span>&nbsp;会员中心-->
+            <!--</a>-->
+             <!--<a href="pwd.html" class="list-group-item active">-->
+                <!--<span class="glyphicon glyphicon-lock"></span>&nbsp;修改密码-->
+            <!--</a>-->
+            <!--<a href="comments.html" class="list-group-item">-->
+                <!--<span class="glyphicon glyphicon-comment"></span>&nbsp;评论记录-->
+            <!--</a>-->
+            <!--<a href="loginlog.html" class="list-group-item">-->
+                <!--<span class="glyphicon glyphicon-calendar"></span>&nbsp;登录日志-->
+            <!--</a>-->
+            <!--<a href="moviecol.html" class="list-group-item">-->
+                <!--<span class="glyphicon glyphicon-heart"></span>&nbsp;收藏电影-->
+            <!--</a>-->
+        <!--</div>-->
+    <!--</div>-->
+     <div class="col-md-3">
+        <!--引用的语法-->
+        {% include "home/menu.html" %}
     </div>
     <div class="col-md-9">
         <div class="panel panel-warning">
@@ -51,12 +55,3 @@
     </div>
 </div>
 {% endblock %}}
-
-
-<!--{% block js %}-->
-<!--<script>-->
-<!--$(document).ready(function(){-->
- <!--$("#menu-2").addClass("active");-->
-<!--})-->
-<!--</script>-->
-<!--{% endblock %}-->
