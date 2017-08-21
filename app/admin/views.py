@@ -1,6 +1,8 @@
 from . import admin
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect,flash,session,request
 from app.admin.forms import LoginForm
+from app.models import Admin
+from app import db,app
 
 # _*_ coding:utf-8 _*_
 __author__ = 'Ando'
@@ -18,14 +20,20 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        data=form.data
-
+        data = form.data
+        admin = Admin.query.filter_by(name=data["account"]).first()
+        if not admin.check_pwd(data["pwd"]):
+            flash("密码错误！", 'err')
+            return redirect(url_for("admin.login"))
+        session["admin"] = data["account"]
+        return redirect(request.args.get("next") or url_for("admin.index"))
     return render_template("admin/login.html", form=form)
 
 
 # 退出
 @admin.route("/logout/")
 def logout():
+    session.pop("admin", None)
     return redirect(url_for("admin.login"))
 
 

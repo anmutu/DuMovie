@@ -161,6 +161,10 @@ class Admin(db.Model):
     def __repr__(self):
         return "<Admin %r>" % self.id
 
+    def check_pwd(self, pwd):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.pwd, pwd)
+
 
 # 管理员登录日志
 class AdminLog(db.Model):
@@ -191,3 +195,14 @@ class OperLog(db.Model):
 
 if __name__ == "__main__":
     db.create_all()
+
+
+
+#生成管理员密码
+# from werkzeug.security import generate_password_hash
+# admin = Admin(
+#    name="dushao",
+#    pwd=generate_password_hash("dushao")
+# )
+# db.session.add(admin)
+# db.session.commit()
