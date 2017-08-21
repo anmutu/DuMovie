@@ -1,9 +1,10 @@
+from . import admin
+from flask import Flask, render_template, url_for, redirect
+from app.admin.forms import LoginForm
+
 # _*_ coding:utf-8 _*_
 __author__ = 'Ando'
 __date__ = '8/2/2017 11:59 PM'
-
-from . import admin
-from flask import Flask, render_template, url_for, redirect
 
 
 # 主页
@@ -13,9 +14,13 @@ def index():
 
 
 # 登录
-@admin.route("/login/")
+@admin.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("admin/login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        data=form.data
+
+    return render_template("admin/login.html", form=form)
 
 
 # 退出
@@ -124,7 +129,6 @@ def auth_add():
 @admin.route("/auth/list/")
 def auth_list():
     return render_template("admin/auth_list.html")
-
 
 
 # 增加管理员
