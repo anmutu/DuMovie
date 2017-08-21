@@ -1,22 +1,37 @@
 from . import admin
-from flask import Flask, render_template, url_for, redirect,flash,session,request
-from app.admin.forms import LoginForm
-from app.models import Admin
-from app import db,app
+from flask import Flask, render_template, url_for, redirect, flash, session, request
+from app.admin.forms import LoginForm, TagForm
+from app.models import Admin,Tag
+# 登录装饰器用的到
+from functools import wraps
+from app import db, app
 
 # _*_ coding:utf-8 _*_
 __author__ = 'Ando'
 __date__ = '8/2/2017 11:59 PM'
 
 
+# 登录装饰器
+def admin_login_req(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "admin" not in session:
+            return redirect(url_for("admin.login", next=request.url))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
 # 主页
 @admin.route("/")
+@admin_login_req
 def index():
     return render_template("admin/index.html")
 
 
 # 登录
 @admin.route("/login/", methods=["GET", "POST"])
+@admin_login_req
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -32,6 +47,7 @@ def login():
 
 # 退出
 @admin.route("/logout/")
+@admin_login_req
 def logout():
     session.pop("admin", None)
     return redirect(url_for("admin.login"))
@@ -44,9 +60,23 @@ def pwd():
 
 
 # 增加标签
-@admin.route("/tag_add/")
+@admin.route("/tag_add/", methods=["GET", "POST"])
 def tag_add():
-    return render_template("admin/tag_add.html")
+    form = TagForm()
+    if form.validate_on_submit():
+        data = form.data
+        tag = Tag.query.filter_by(name=data["name"]).count()
+        if tag == 1:
+            flash("名称已经存在！", "err")
+            return redirect(url_for('admin.tag_add'))
+        tag = Tag(
+            name=data["name"]
+        )
+        db.session.add(tag)
+        db.session.commit()
+        flash("添加标签成功！", "ok")
+        redirect(url_for('admin.tag_add'))
+    return render_template("admin/tag_add.html", form=form)
 
 
 # 标签列表
