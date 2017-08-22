@@ -1,7 +1,7 @@
 from . import admin
 from flask import Flask, render_template, url_for, redirect, flash, session, request
 from app.admin.forms import LoginForm, TagForm
-from app.models import Admin,Tag
+from app.models import Admin, Tag
 # 登录装饰器用的到
 from functools import wraps
 from app import db, app
@@ -31,7 +31,7 @@ def index():
 
 # 登录
 @admin.route("/login/", methods=["GET", "POST"])
-@admin_login_req
+#@admin_login_req   login没有装饰器，不然会导致
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -80,9 +80,14 @@ def tag_add():
 
 
 # 标签列表
-@admin.route("/tag_list/")
+@admin.route("/tag/list/<int:page>/", methods=["GET"])
 def tag_list():
-    return render_template("admin/tag_list.html")
+    if page is None:
+        page = 1
+    page_data = Tag.query.order_by(
+        Tag.addtime.desc()
+    ).paginate(page=page, per_page=10)
+    return render_template("admin/tag_list.html", page_data=page_data)
 
 
 # 添加电影
