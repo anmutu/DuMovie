@@ -67,7 +67,7 @@ class Movie(db.Model):
     playnum = db.Column(db.BigInteger)  # 播放量
     commentnum = db.Column(db.BigInteger)  # 评论量
     area = db.Column(db.String(255))  # 地区
-    realse_time = db.Column(db.Date)  # 上映时间
+    release_time = db.Column(db.Date)  # 上映时间
     mins = db.Column(db.String(100))  # 时长
     addtime = db.Column(db.DateTime, index=True, default=datetime.utcnow)  # 增加时间
     comments = db.relationship('Comment', backref='movie')  # 评论外键关系之关联
