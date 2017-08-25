@@ -138,6 +138,8 @@ def change_filename(filename):
 @admin_login_req
 def movie_add():
     form = MovieForm()
+    # 实时拉取出标签
+    form.tag_id.choices = [(v.id, v.name) for v in Tag.query.all()]
     if form.validate_on_submit():
         data = form.data
         file_url = secure_filename(form.url.data.filename)
@@ -213,7 +215,7 @@ def movie_edit(id=None):
             form.url.data.save(app.config["UP_DIR"] + movie.url)
 
         if form.cover.data.filename != "":
-            file_cover= secure_filename(form.cover.data.filename)
+            file_cover = secure_filename(form.cover.data.filename)
             movie.cover = change_filename(file_cover)
             form.cover.data.save(app.config["UP_DIR"] + movie.cover)
 
@@ -240,8 +242,6 @@ def movie_del(id=None):
     db.session.commit()
     flash("成功删除电影！", "ok")
     return redirect(url_for('admin.movie_list', page=1))
-
-
 
 
 # 添加预告
