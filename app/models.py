@@ -201,8 +201,8 @@ if __name__ == "__main__":
 #生成管理员密码
 # from werkzeug.security import generate_password_hash
 # admin = Admin(
-#    name="dushao",
-#    pwd=generate_password_hash("dushao")
+#    name="yanyan",
+#    pwd=generate_password_hash("yanyan")
 # )
 # db.session.add(admin)
 # db.session.commit()

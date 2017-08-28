@@ -1,6 +1,6 @@
 from . import admin
 from flask import Flask, render_template, url_for, redirect, flash, session, request
-from app.admin.forms import LoginForm, TagForm, MovieForm
+from app.admin.forms import LoginForm, TagForm, MovieForm, PwdForm
 from app.models import Admin, Tag, Movie, User, Comment
 # 登录装饰器用的到
 from functools import wraps
@@ -56,12 +56,6 @@ def login():
 def logout():
     session.pop("admin", None)
     return redirect(url_for("admin.login"))
-
-
-# 密码
-@admin.route("/pwd/")
-def pwd():
-    return render_template("admin/pwd.html")
 
 
 # 增加标签
@@ -319,7 +313,6 @@ def comment_del(id=None):
     return redirect(url_for('admin.comment_list', page=1))
 
 
-
 # 收藏列表
 @admin.route("/enshrine/list/")
 def enshrine_list():
@@ -384,3 +377,20 @@ def admin_add():
 @admin.route("/admin/list/")
 def admin_list():
     return render_template("admin/admin_list.html")
+
+
+# 修改密码
+@admin.route("/pwd/", methods=["GET", "POST"])
+@admin_login_req
+def pwd():
+    form = PwdForm()
+    if form.validate_on_submit():
+        data = form.data
+        admin = Admin.query.filter_by(name=session["admin"]).first()
+        from werkzeug.security import generate_password_hash
+        admin.pwd = generate_password_hash(data["new_pwd"])
+        db.session.add(admin)
+        db.session.commit()
+        flash("修改密码成功，请重新登录！", "ok")
+        redirect(url_for('admin.logout'))
+    return render_template("admin/pwd.html", form=form)

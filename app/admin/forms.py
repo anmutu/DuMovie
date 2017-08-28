@@ -4,7 +4,7 @@ from wtforms import StringField, PasswordField, SubmitField, FileField, TextArea
 # 导入验证类型
 from wtforms.validators import DataRequired, ValidationError
 # 导入实体
-from app.models import Admin,Movie,Tag
+from app.models import Admin, Movie, Tag
 
 # _*_ coding:utf-8 _*_
 __author__ = 'Ando'
@@ -175,4 +175,43 @@ class MovieForm(FlaskForm):
     )
 
 
+class PwdForm(FlaskForm):
+    old_pwd = PasswordField(
+        label="旧密码",
+        validators=[
+            DataRequired("请输入旧密码！")
+        ],
+        description="旧密码",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入旧密码！",
+        }
+    )
+    new_pwd = PasswordField(
+        label="新密码",
+        validators=[
+            DataRequired("请输入新密码！")
+        ],
+        description="新密码",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入新密码！",
+        }
+    )
+    submit = SubmitField(
+        '编辑',
+        render_kw={
+            "class": "btn btn-primary",
+        }
+    )
 
+    # 验证旧密码
+    def validate_old_pwd(self, field):
+        from flask import session
+        pwd = field.data
+        name = session["admin"]
+        admin = Admin.query.filter_by(
+            name=name
+        ).first()
+        if not admin.check_pwd(pwd):
+            raise ValidationError("旧密码错误！")
