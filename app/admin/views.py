@@ -1,7 +1,7 @@
 from . import admin
 from flask import Flask, render_template, url_for, redirect, flash, session, request
 from app.admin.forms import LoginForm, TagForm, MovieForm
-from app.models import Admin, Tag, Movie
+from app.models import Admin, Tag, Movie, User
 # 登录装饰器用的到
 from functools import wraps
 from app import db, app
@@ -256,16 +256,35 @@ def preview_list():
     return render_template("admin/preview_list.html")
 
 
-# 用户列表
-@admin.route("/user/list/")
-def user_list():
-    return render_template("admin/user_list.html")
+# 会员列表
+@admin.route("/user/list/<int:page>/", methods=["GET"])
+@admin_login_req
+def user_list(page=None):
+    if page is None:
+        page = 1
+    page_data = User.query.order_by(
+        User.addtime.desc()
+    ).paginate(page=page, per_page=10)
+    return render_template("admin/user_list.html", page_data=page_data)
+
+
+# 删除会员
+@admin.route("/user/del/<int:id>/", methods=["GET"])
+@admin_login_req
+def user_del(id=None):
+    user = User.query.get_or_404(int(id))
+    db.session.delete(user)
+    db.session.commit()
+    flash("删除会员成功！", "ok")
+    return redirect(url_for('admin.user_list', page=1))
 
 
 # 用户详情
 @admin.route("/user/detail/")
-def user_detail():
-    return render_template("admin/user_detail.html")
+@admin.route("/user/view/<int:id>/", methods=["GET"])
+def user_detail(id=None):
+    user = User.query.get_or_404(int(id))
+    return render_template("admin/user_detail.html", user=user)
 
 
 # 用户列表
