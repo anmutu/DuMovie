@@ -14,9 +14,11 @@ import uuid
 __author__ = 'Ando'
 __date__ = '8/15/2017 10:52 PM'
 
-# _*_ coding:utf-8 _*_
-__author__ = 'Ando'
-__date__ = '8/2/2017 11:58 PM'
+
+@home.route("/")
+def index():
+    # return "<h1>Home</h1>"
+    return render_template("home/index.html")
 
 
 # 会员注册
@@ -36,12 +38,6 @@ def register():
         db.session.commit()
         flash("注册成功！", "ok")
     return render_template("home/register.html", form=form)
-
-
-@home.route("/")
-def index():
-    # return "<h1>Home</h1>"
-    return render_template("home/index.html")
 
 
 # 登录

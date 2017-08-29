@@ -4,7 +4,8 @@ __date__ = '8/2/2017 11:56 PM'
 
 from flask import Flask
 from _datetime import datetime
-from app import  db
+from app import db
+
 
 # 会员
 class User(db.Model):
@@ -25,6 +26,11 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User %r>" % self.name
+
+    # 用户检测密码方法（非管理员）
+    def check_pwd(self, pwd):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.pwd, pwd)
 
 
 # 会员登录日志
@@ -198,11 +204,11 @@ if __name__ == "__main__":
 
 
 
-#生成管理员密码
-# from werkzeug.security import generate_password_hash
-# admin = Admin(
-#    name="yanyan",
-#    pwd=generate_password_hash("yanyan")
-# )
-# db.session.add(admin)
-# db.session.commit()
+    # 生成管理员密码
+    # from werkzeug.security import generate_password_hash
+    # admin = Admin(
+    #    name="yanyan",
+    #    pwd=generate_password_hash("yanyan")
+    # )
+    # db.session.add(admin)
+    # db.session.commit()
